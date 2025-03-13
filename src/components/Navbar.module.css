@@ -1,0 +1,317 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3.75rem; /* reduced from 2.25rem to 1rem */
+  width: 100%;
+  background-color: var(--white);
+  height: 5rem; /* Increased from 4rem to 5rem */
+  position: relative;
+  z-index: 30; /* Ensure navbar stays on top */
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 94.5rem; /* 1512px */
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  height: 2rem; /* Increased to match logo text */
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  height: 100%;
+}
+
+.logoIcon {
+  display: inline-block;
+  width: 2rem; /* Increased to match text */
+  height: 2rem; /* Increased to match text */
+  transition: transform 0.3s ease;
+  vertical-align: middle;
+}
+
+.logoLink:hover .logoIcon {
+  transform: scale(1.05);
+}
+
+.logoText {
+  font-weight: 500;
+  font-size: var(--font-size-large);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem; /* 40px */
+}
+
+.link {
+  font-weight: 500;
+  font-size: var(--font-size-medium);
+  line-height: 1.375rem; /* 22px */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--primary-color);
+}
+
+.active {
+  color: var(--primary-color);
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem; /* 16px */
+}
+
+.loginButton {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1.5rem; /* reduced from 0.75rem 2rem */
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: var(--font-size-small);
+  line-height: 1.25rem; /* 20px */
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.loginButton:hover {
+  background-color: var(--secondary-color);
+}
+
+.registerButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1.5rem; /* reduced from 0.75rem 2rem */
+  background: var(--primary-color);
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: var(--font-size-small);
+  line-height: 1.25rem; /* 20px */
+  color: var(--white);
+  transition: opacity 0.3s ease;
+}
+
+.registerButton:hover {
+  opacity: 0.9;
+}
+
+/* Hamburger Menu Styles */
+.mobileMenuButton {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 1.5rem; /* Reduced from 2rem */
+  height: 1.25rem; /* Reduced from 1.5rem */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 20; /* Increased z-index to stay on top */
+  position: relative; /* Added position */
+}
+
+.mobileMenuButton span {
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: all 0.3s ease;
+  position: absolute; /* Changed to absolute positioning */
+  left: 0;
+}
+
+/* Position the three lines */
+.mobileMenuButton span:nth-child(1) {
+  top: 0;
+}
+
+.mobileMenuButton span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mobileMenuButton span:nth-child(3) {
+  bottom: 0;
+}
+
+.mobileMenu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--white);
+  z-index: 10;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  overflow-y: auto; /* Allow scrolling in the menu */
+}
+
+.mobileMenuOpen {
+  transform: translateY(0);
+}
+
+.mobileMenuLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.mobileMenuLink {
+  font-weight: 500;
+  font-size: var(--font-size-medium);
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.mobileMenuLink:hover,
+.mobileMenuLink.active {
+  color: var(--primary-color);
+}
+
+.mobileMenuButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 15rem;
+  margin-top: 1rem;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 1rem 2rem;
+    height: 5rem;
+  }
+
+  .links {
+    gap: 1.5rem;
+  }
+
+  .logoText {
+    font-size: var(--font-size-large); /* Keep consistent size */
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 1.5rem;
+    height: 5rem;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .buttons {
+    display: none;
+  }
+
+  .mobileMenuButton {
+    display: flex;
+  }
+
+  .mobileMenu {
+    display: flex;
+  }
+
+  .logoText {
+    font-size: var(--font-size-large); /* Keep consistent size */
+  }
+}
+
+/* iPad Portrait Specific */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .navbar {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .logoText {
+    font-size: var(--font-size-large); /* Keep consistent size */
+  }
+
+  .links {
+    gap: 1.25rem;
+  }
+
+  .link {
+    font-size: var(--font-size-small);
+  }
+
+  .loginButton,
+  .registerButton {
+    padding: 0.5rem 1.25rem;
+    font-size: var(--font-size-small);
+  }
+}
+
+/* Animation for hamburger to X */
+.mobileMenuButton.active span:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.mobileMenuButton.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobileMenuButton.active span:nth-child(3) {
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+}
+
+/* Fixed position for navbar when menu is open */
+.navbarFixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  background-color: var(--white);
+}

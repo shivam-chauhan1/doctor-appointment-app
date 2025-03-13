@@ -30,8 +30,11 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--background);
+  position: relative;
 }
 
 .main ol {
@@ -68,10 +71,7 @@
   padding: 0 20px;
   border: none;
   border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
   cursor: pointer;
   display: flex;
   align-items: center;
