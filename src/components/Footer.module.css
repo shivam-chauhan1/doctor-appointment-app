@@ -1,0 +1,49 @@
+.footer {
+  background-color: #fff;
+  padding: 30px 0;
+  border-top: 1px solid #eee;
+  margin-top: auto;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footerContent p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.contactInfo {
+  display: flex;
+  gap: 15px;
+}
+
+.contactLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  transition: background-color 0.2s ease;
+}
+
+.contactLink:hover {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .footerContent {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+}

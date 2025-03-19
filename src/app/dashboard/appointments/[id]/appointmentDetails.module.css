@@ -1,0 +1,346 @@
+.detailsPage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8fcf9;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.backLink {
+  font-family: var(--font-montserrat);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #1c4a2a;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.backLink:hover {
+  color: #143820;
+  text-decoration: underline;
+}
+
+.title {
+  font-family: var(--font-montserrat);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 39px;
+  color: #0e2515;
+  margin: 0;
+}
+
+.content {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.appointmentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e0e8e0;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: var(--font-montserrat);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.statusBadge[data-status="upcoming"] {
+  background: #e6f4ea;
+  color: #1c4a2a;
+}
+
+.statusBadge[data-status="completed"] {
+  background: #e8f0fe;
+  color: #1a73e8;
+}
+
+.statusBadge[data-status="cancelled"] {
+  background: #feeceb;
+  color: #ea4335;
+}
+
+.appointmentDateTime {
+  display: flex;
+  gap: 16px;
+}
+
+.dateTime {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-montserrat);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #0e2515;
+}
+
+.icon {
+  font-size: 18px;
+}
+
+.doctorInfo {
+  display: flex;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e0e8e0;
+}
+
+.doctorImageContainer {
+  width: 120px;
+  height: 120px;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.doctorImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.doctorDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.doctorName {
+  font-family: var(--font-montserrat);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  color: #0e2515;
+  margin: 0 0 8px 0;
+}
+
+.doctorSpecialty {
+  font-family: var(--font-montserrat);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: #1c4a2a;
+  margin: 0 0 16px 0;
+}
+
+.locationInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-montserrat);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #8c8c8c;
+}
+
+.appointmentDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detailSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionTitle {
+  font-family: var(--font-montserrat);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  color: #0e2515;
+  margin: 0;
+}
+
+.sectionContent {
+  font-family: var(--font-montserrat);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #4d4d4d;
+  margin: 0;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.rescheduleButton,
+.cancelButton,
+.feedbackButton,
+.bookAgainButton {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: var(--font-montserrat);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rescheduleButton {
+  background: #f0f7f2;
+  border: 1px solid #e0e8e0;
+  color: #1c4a2a;
+  flex: 1;
+}
+
+.rescheduleButton:hover {
+  background: #e0e8e0;
+}
+
+.cancelButton {
+  background: #fff0f0;
+  border: 1px solid #ffe0e0;
+  color: #ff5252;
+  flex: 1;
+}
+
+.cancelButton:hover {
+  background: #ffe0e0;
+}
+
+.feedbackButton {
+  background: #f0f7f2;
+  border: 1px solid #e0e8e0;
+  color: #1c4a2a;
+  flex: 1;
+}
+
+.feedbackButton:hover {
+  background: #e0e8e0;
+}
+
+.bookAgainButton {
+  background: #1c4a2a;
+  border: none;
+  color: #ffffff;
+  flex: 1;
+}
+
+.bookAgainButton:hover {
+  background: #143820;
+}
+
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 40px;
+}
+
+.loadingSpinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #e0e8e0;
+  border-top: 5px solid #1c4a2a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.errorContainer h2 {
+  font-family: var(--font-montserrat);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 34px;
+  color: #0e2515;
+  margin: 0 0 16px 0;
+}
+
+.errorContainer p {
+  font-family: var(--font-montserrat);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #8c8c8c;
+  margin: 0 0 32px 0;
+}
+
+.backButton {
+  padding: 12px 24px;
+  background: #1c4a2a;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-montserrat);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.backButton:hover {
+  background: #143820;
+}
+
+@media (max-width: 768px) {
+  .appointmentHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .doctorInfo {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .locationInfo {
+    justify-content: center;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+  }
+}

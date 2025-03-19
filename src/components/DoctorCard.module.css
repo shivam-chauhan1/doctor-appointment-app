@@ -1,0 +1,146 @@
+.doctorCard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.doctorCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardContent {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+}
+
+.imageContainer {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #eee;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.doctorImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.doctorDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.doctorName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0e2515;
+  margin: 0;
+}
+
+.infoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.infoIcon {
+  color: #666;
+}
+
+.infoText {
+  font-size: 14px;
+  color: #666;
+}
+
+.ratingsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+  margin-bottom: 40px;
+}
+
+.ratingsLabel {
+  font-size: 14px;
+  color: #666;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  width: 16px;
+  height: 16px;
+}
+
+.bookButton {
+  background-color: transparent;
+  color: #0e2515;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+  margin-top: auto;
+}
+
+.bookButton:hover {
+  background-color: #1c4a2a;
+  color: #ffffff;
+  border-color: #1c4a2a;
+}
+
+@media (max-width: 768px) {
+  .cardContent {
+    padding: 15px;
+  }
+
+  .imageContainer {
+    width: 100px;
+    height: 100px;
+  }
+
+  .doctorName {
+    font-size: 16px;
+  }
+
+  .infoText,
+  .ratingsLabel {
+    font-size: 13px;
+  }
+}
