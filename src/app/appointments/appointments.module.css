@@ -25,15 +25,15 @@
 }
 
 .doctorsHeader {
-  margin: 30px 0;
+  margin: 60px 0;
   text-align: center;
 }
 
 .doctorsCount {
-  font-size: 38px;
-  font-weight: 700;
+  font-size: 50px;
+  font-weight: 500;
   color: #0e2515;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .doctorsSubtitle {
