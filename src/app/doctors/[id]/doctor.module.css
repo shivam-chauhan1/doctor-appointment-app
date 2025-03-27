@@ -1,0 +1,609 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+.profileContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  flex: 1;
+}
+
+.errorMessage {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.5rem;
+  color: #dc3545;
+  margin: 3rem auto;
+}
+
+/* Doctor Header */
+.doctorHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.doctorImage {
+  flex-shrink: 0;
+}
+
+.doctorAvatar {
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.doctorInfo {
+  flex: 1;
+}
+
+.doctorName {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 2rem;
+  color: #1c4a2a;
+  margin-bottom: 0.5rem;
+}
+
+.doctorSpecialty {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+}
+
+.starIcon,
+.starIconHalf,
+.starIconEmpty {
+  color: #ffc107;
+  font-size: 1.25rem;
+  margin-right: 2px;
+}
+
+.starIconHalf {
+  opacity: 0.7;
+}
+
+.starIconEmpty {
+  color: #e0e0e0;
+}
+
+.ratingText {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-family: "Poppins", sans-serif;
+  color: #555;
+}
+
+.infoIcon {
+  color: #1c4a2a;
+  font-size: 1.1rem;
+}
+
+.bookingSection {
+  flex-shrink: 0;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.consultationFee {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.feeLabel {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.feeAmount {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #1c4a2a;
+}
+
+.bookAppointmentBtn {
+  background-color: #1c4a2a;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  text-align: center;
+}
+
+.bookAppointmentBtn:hover {
+  background-color: #153a22;
+}
+
+/* Tabs */
+.tabsContainer {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+}
+
+.tabButton {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tabButton:hover {
+  color: #1c4a2a;
+}
+
+.activeTab {
+  color: #1c4a2a;
+  border-bottom: 2px solid #1c4a2a;
+}
+
+.tabContent {
+  padding: 2rem;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 3rem;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #1c4a2a;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionIcon {
+  font-size: 1.25rem;
+}
+
+.doctorBio {
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+.doctorMetadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.metadataItem {
+  flex: 1;
+  min-width: 200px;
+}
+
+.metadataItem h3 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.metadataItem p {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+}
+
+/* Availability Schedule */
+.daysContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dayButton {
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dayButton:hover {
+  background-color: #e8f5e9;
+  color: #1c4a2a;
+}
+
+.activeDay {
+  background-color: #1c4a2a;
+  color: white;
+}
+
+.activeDay:hover {
+  background-color: #1c4a2a;
+  color: white;
+}
+
+.disabledDay {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.timeSlotsContainer {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.dayTitle {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timeIcon {
+  color: #1c4a2a;
+}
+
+.timeSlots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.timeSlot {
+  padding: 0.75rem 1rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  color: #1c4a2a;
+  text-align: center;
+}
+
+.noSlots {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+  font-style: italic;
+}
+
+/* Reviews Section */
+.reviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.writeReviewBtn {
+  padding: 0.75rem 1.5rem;
+  background-color: #1c4a2a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.writeReviewBtn:hover {
+  background-color: #153a22;
+}
+
+.reviewForm {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.reviewFormTitle {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.ratingSelection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ratingLabel {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #555;
+}
+
+.ratingStars {
+  display: flex;
+}
+
+.ratingButton {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.ratingStarActive {
+  color: #ffc107;
+  font-size: 1.5rem;
+}
+
+.ratingStar {
+  color: #e0e0e0;
+  font-size: 1.5rem;
+}
+
+.reviewInputGroup {
+  margin-bottom: 1rem;
+}
+
+.reviewInputGroup label {
+  display: block;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.reviewInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.reviewInput:focus {
+  outline: none;
+  border-color: #1c4a2a;
+}
+
+.submitReviewBtn {
+  padding: 0.75rem 1.5rem;
+  background-color: #1c4a2a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitReviewBtn:hover {
+  background-color: #153a22;
+}
+
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.reviewCard {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.reviewUser {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.reviewUserImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.reviewUserInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewUserName {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.reviewDate {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.reviewRating {
+  display: flex;
+}
+
+.reviewComment {
+  font-family: "Poppins", sans-serif;
+  line-height: 1.5;
+  color: #444;
+  margin: 0;
+}
+
+.noReviews {
+  font-family: "Poppins", sans-serif;
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* Footer */
+.footer {
+  background-color: white;
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid #eee;
+  margin-top: auto;
+}
+
+.copyright {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .doctorHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .doctorInfo {
+    width: 100%;
+  }
+
+  .infoItem {
+    justify-content: center;
+  }
+
+  .bookingSection {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .ratingContainer {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .profileContainer {
+    padding: 1rem;
+  }
+
+  .tabButton {
+    padding: 1rem;
+  }
+
+  .reviewHeader {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .reviewUser {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .doctorName {
+    font-size: 1.5rem;
+  }
+
+  .doctorSpecialty {
+    font-size: 1rem;
+  }
+
+  .daysContainer {
+    gap: 0.25rem;
+  }
+
+  .dayButton {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .timeSlots {
+    justify-content: center;
+  }
+}

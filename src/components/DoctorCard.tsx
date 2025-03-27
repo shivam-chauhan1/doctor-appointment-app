@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./DoctorCard.module.css";
+import { useRouter } from "next/navigation";
 
 interface DoctorCardProps {
   id: string;
@@ -24,6 +25,8 @@ export default function DoctorCard({
   degree,
   imageUrl,
 }: DoctorCardProps) {
+  const router = useRouter();
+
   // Generate star rating
   const renderStars = () => {
     const stars = [];
@@ -42,8 +45,12 @@ export default function DoctorCard({
     return stars;
   };
 
+  const handleCardClick = () => {
+    router.push(`/doctors/${id}`);
+  };
+
   return (
-    <div className={styles.doctorCard}>
+    <div className={styles.doctorCard} onClick={handleCardClick}>
       <div className={styles.cardContent}>
         <div className={styles.imageContainer}>
           <Image
@@ -90,7 +97,11 @@ export default function DoctorCard({
           </div>
         </div>
 
-        <Link href={`/appointments/book/${id}`} className={styles.bookButton}>
+        <Link
+          href={`/appointments/book/${id}`}
+          className={styles.bookButton}
+          onClick={(e) => e.stopPropagation()}
+        >
           Book Appointment
         </Link>
       </div>
