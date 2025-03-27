@@ -75,21 +75,185 @@ const mockDoctors: Doctor[] = [
   },
 ];
 
+// Interface for date objects
+interface DateItem {
+  day: string;
+  date: number;
+  month: string;
+  year: number;
+  fullDate: Date;
+  availableSlots?: number;
+}
+
+// Interface for time slots
+interface TimeSlot {
+  time: string;
+  status: "available" | "disabled" | "selected";
+}
+
+// Define a utility function to get slots for a specific date
+const getTimeSlotsForDate = (
+  date: DateItem
+): { morning: TimeSlot[]; afternoon: TimeSlot[] } => {
+  // Different days have different availability patterns
+  // Here we use the day of week to determine availability
+  const dayOfWeek = date.fullDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+  // Initialize slots with all disabled
+  const morningSlots: TimeSlot[] = [
+    { time: "9:00 AM", status: "disabled" },
+    { time: "9:30 AM", status: "disabled" },
+    { time: "10:00 AM", status: "disabled" },
+    { time: "10:30 AM", status: "disabled" },
+    { time: "11:00 AM", status: "disabled" },
+    { time: "11:30 AM", status: "disabled" },
+  ];
+
+  const afternoonSlots: TimeSlot[] = [
+    { time: "1:00 PM", status: "disabled" },
+    { time: "1:30 PM", status: "disabled" },
+    { time: "2:00 PM", status: "disabled" },
+    { time: "2:30 PM", status: "disabled" },
+    { time: "3:00 PM", status: "disabled" },
+    { time: "3:30 PM", status: "disabled" },
+    { time: "4:00 PM", status: "disabled" },
+    { time: "4:30 PM", status: "disabled" },
+  ];
+
+  // Weekday pattern (Monday-Friday)
+  if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+    // Morning slots
+    morningSlots[1].status = "available"; // 9:30 AM
+    morningSlots[3].status = "available"; // 10:30 AM
+
+    // Afternoon slots
+    afternoonSlots[3].status = "available"; // 2:30 PM
+    afternoonSlots[4].status = "available"; // 3:00 PM
+    afternoonSlots[5].status = "available"; // 3:30 PM
+  }
+
+  // Weekend pattern (Saturday, Sunday)
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    // Limited slots on weekends
+    morningSlots[1].status = "available"; // 9:30 AM
+    morningSlots[2].status = "available"; // 10:00 AM
+    afternoonSlots[1].status = "available"; // 1:30 PM
+  }
+
+  // Special case for specific dates (example for today)
+  if (date.fullDate.toDateString() === new Date().toDateString()) {
+    // Today only has specific slots available
+    morningSlots.forEach((slot) => {
+      slot.status = "disabled";
+    });
+    morningSlots[1].status = "available"; // Only 9:30 AM
+
+    afternoonSlots.forEach((slot) => {
+      slot.status = "disabled";
+    });
+    afternoonSlots[5].status = "available"; // Only 3:30 PM
+  }
+
+  return { morning: morningSlots, afternoon: afternoonSlots };
+};
+
+// Helper function to count available slots
+const countAvailableSlots = (
+  morning: TimeSlot[],
+  afternoon: TimeSlot[]
+): number => {
+  return (
+    morning.filter((slot) => slot.status === "available").length +
+    afternoon.filter((slot) => slot.status === "available").length
+  );
+};
+
+// Modify getDatesForMonth to include slot counts
+const getDatesForMonth = (month: number, year: number) => {
+  const dates: DateItem[] = [];
+  const today = new Date();
+  const lastDayOfMonth = new Date(year, month + 1, 0);
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // If current month, start from today's date
+  const startDate =
+    month === today.getMonth() && year === today.getFullYear()
+      ? today.getDate()
+      : 1;
+
+  for (let i = startDate; i <= lastDayOfMonth.getDate(); i++) {
+    const date = new Date(year, month, i);
+    const dateItem: DateItem = {
+      day: dayNames[date.getDay()],
+      date: date.getDate(),
+      month: monthNames[date.getMonth()],
+      year: date.getFullYear(),
+      fullDate: date,
+    };
+
+    // Calculate available slots for this date
+    const { morning, afternoon } = getTimeSlotsForDate(dateItem);
+    dateItem.availableSlots = countAvailableSlots(morning, afternoon);
+
+    dates.push(dateItem);
+  }
+
+  return dates;
+};
+
 export default function BookingPage() {
   const params = useParams();
   const router = useRouter();
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    date: "",
-    time: "",
-    reason: "",
-  });
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [activeTab, setActiveTab] = useState<"hospital" | "video">("hospital");
+  const [selectedDate, setSelectedDate] = useState<number | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
+    null
+  );
+  const [currentMonthData, setCurrentMonthData] = useState<{
+    month: number;
+    year: number;
+    name: string;
+  }>({ month: 0, year: 0, name: "" });
+  const [dates, setDates] = useState<DateItem[]>([]);
+
+  // Morning time slots (up to 11:30 AM)
+  const [morningSlots, setMorningSlots] = useState<TimeSlot[]>([
+    { time: "9:00 AM", status: "disabled" },
+    { time: "9:30 AM", status: "available" },
+    { time: "10:00 AM", status: "disabled" },
+    { time: "10:30 AM", status: "available" },
+    { time: "11:00 AM", status: "disabled" },
+    { time: "11:30 AM", status: "disabled" },
+  ]);
+
+  // Afternoon time slots (after 12 noon)
+  const [afternoonSlots, setAfternoonSlots] = useState<TimeSlot[]>([
+    { time: "1:00 PM", status: "disabled" },
+    { time: "1:30 PM", status: "disabled" },
+    { time: "2:00 PM", status: "disabled" },
+    { time: "2:30 PM", status: "available" },
+    { time: "3:00 PM", status: "available" },
+    { time: "3:30 PM", status: "available" },
+    { time: "4:00 PM", status: "disabled" },
+    { time: "4:30 PM", status: "disabled" },
+  ]);
 
   useEffect(() => {
     // In a real app, this would be an API call
@@ -100,95 +264,290 @@ export default function BookingPage() {
       setDoctor(foundDoctor);
     }
 
+    // Set current month based on current date
+    const currentDate = new Date();
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    setCurrentMonthData({
+      month: currentMonth,
+      year: currentYear,
+      name: `${monthNames[currentMonth]} ${currentYear}`,
+    });
+
+    // Generate dates for current month
+    const monthDates = getDatesForMonth(currentMonth, currentYear);
+    setDates(monthDates);
+
+    // Set first date as selected by default if dates exist
+    if (monthDates.length > 0) {
+      setSelectedDate(0);
+    }
+
     setLoading(false);
   }, [params.id]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  // Update slots when date changes
+  useEffect(() => {
+    if (selectedDate !== null && dates.length > 0) {
+      const selectedDateObj = dates[selectedDate];
+      const { morning, afternoon } = getTimeSlotsForDate(selectedDateObj);
 
-    // Clear error when field is edited
-    if (formErrors[name]) {
-      setFormErrors({
-        ...formErrors,
-        [name]: "",
-      });
+      setMorningSlots(morning);
+      setAfternoonSlots(afternoon);
+
+      // Reset selected time when date changes
+      setSelectedTime(null);
+      setSelectedTimeSlot(null);
+    }
+  }, [selectedDate, dates]);
+
+  const handleTabChange = (tab: "hospital" | "video") => {
+    setActiveTab(tab);
+  };
+
+  const handleDateSelect = (index: number) => {
+    if (selectedDate === index) return; // Don't reselect the same date
+    setSelectedDate(index);
+  };
+
+  const handleTimeSelect = (slot: TimeSlot, isAfternoon: boolean) => {
+    if (slot.status === "disabled") return;
+
+    // Get copies of slots arrays
+    const newMorningSlots = [...morningSlots];
+    const newAfternoonSlots = [...afternoonSlots];
+
+    // If clicking on already selected slot, toggle it off
+    if (selectedTimeSlot && selectedTimeSlot.time === slot.time) {
+      const morningIndex = newMorningSlots.findIndex(
+        (s) => s.time === slot.time
+      );
+      const afternoonIndex = newAfternoonSlots.findIndex(
+        (s) => s.time === slot.time
+      );
+
+      if (
+        morningIndex !== -1 &&
+        newMorningSlots[morningIndex].status === "selected"
+      ) {
+        newMorningSlots[morningIndex].status = "available";
+        setMorningSlots(newMorningSlots);
+        setSelectedTime(null);
+        setSelectedTimeSlot(null);
+        return;
+      }
+
+      if (
+        afternoonIndex !== -1 &&
+        newAfternoonSlots[afternoonIndex].status === "selected"
+      ) {
+        newAfternoonSlots[afternoonIndex].status = "available";
+        setAfternoonSlots(newAfternoonSlots);
+        setSelectedTime(null);
+        setSelectedTimeSlot(null);
+        return;
+      }
+    }
+
+    // Reset previously selected slot
+    if (selectedTimeSlot) {
+      const morningIndex = newMorningSlots.findIndex(
+        (s) => s.time === selectedTimeSlot.time
+      );
+      const afternoonIndex = newAfternoonSlots.findIndex(
+        (s) => s.time === selectedTimeSlot.time
+      );
+
+      if (
+        morningIndex !== -1 &&
+        newMorningSlots[morningIndex].status === "selected"
+      ) {
+        newMorningSlots[morningIndex].status = "available";
+      }
+
+      if (
+        afternoonIndex !== -1 &&
+        newAfternoonSlots[afternoonIndex].status === "selected"
+      ) {
+        newAfternoonSlots[afternoonIndex].status = "available";
+      }
+    }
+
+    // Set new selected slot
+    if (isAfternoon) {
+      const index = newAfternoonSlots.findIndex((s) => s.time === slot.time);
+      if (index !== -1) {
+        newAfternoonSlots[index].status = "selected";
+      }
+      setAfternoonSlots(newAfternoonSlots);
+      setMorningSlots(newMorningSlots);
+    } else {
+      const index = newMorningSlots.findIndex((s) => s.time === slot.time);
+      if (index !== -1) {
+        newMorningSlots[index].status = "selected";
+      }
+      setMorningSlots(newMorningSlots);
+      setAfternoonSlots(newAfternoonSlots);
+    }
+
+    setSelectedTime(slot.time);
+    setSelectedTimeSlot(slot);
+  };
+
+  const handlePrevMonth = () => {
+    const { month, year } = currentMonthData;
+    const today = new Date();
+
+    // Don't allow going to previous months before current month
+    if (month === today.getMonth() && year === today.getFullYear()) {
+      return;
+    }
+
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    let prevMonth = month - 1;
+    let prevYear = year;
+
+    if (prevMonth < 0) {
+      prevMonth = 11;
+      prevYear -= 1;
+    }
+
+    // Don't go before current month
+    if (
+      prevYear < today.getFullYear() ||
+      (prevYear === today.getFullYear() && prevMonth < today.getMonth())
+    ) {
+      prevMonth = today.getMonth();
+      prevYear = today.getFullYear();
+    }
+
+    const newMonthData = {
+      month: prevMonth,
+      year: prevYear,
+      name: `${monthNames[prevMonth]} ${prevYear}`,
+    };
+
+    setCurrentMonthData(newMonthData);
+
+    // Update dates for new month
+    const newDates = getDatesForMonth(prevMonth, prevYear);
+    setDates(newDates);
+
+    // Reset selected date if no dates available
+    if (newDates.length > 0) {
+      setSelectedDate(0);
+    } else {
+      setSelectedDate(null);
     }
   };
 
-  const validateForm = () => {
-    const errors: Record<string, string> = {};
+  const handleNextMonth = () => {
+    const { month, year } = currentMonthData;
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
 
-    if (!formData.name.trim()) {
-      errors.name = "Name is required";
+    let nextMonth = month + 1;
+    let nextYear = year;
+
+    if (nextMonth > 11) {
+      nextMonth = 0;
+      nextYear += 1;
     }
 
-    if (!formData.email.trim()) {
-      errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Email is invalid";
-    }
+    const newMonthData = {
+      month: nextMonth,
+      year: nextYear,
+      name: `${monthNames[nextMonth]} ${nextYear}`,
+    };
 
-    if (!formData.phone.trim()) {
-      errors.phone = "Phone number is required";
-    }
+    setCurrentMonthData(newMonthData);
 
-    if (!formData.date) {
-      errors.date = "Date is required";
-    }
+    // Update dates for new month
+    const newDates = getDatesForMonth(nextMonth, nextYear);
+    setDates(newDates);
 
-    if (!formData.time) {
-      errors.time = "Time is required";
+    // Reset selected date
+    if (newDates.length > 0) {
+      setSelectedDate(0);
+    } else {
+      setSelectedDate(null);
     }
-
-    if (!formData.reason.trim()) {
-      errors.reason = "Reason for visit is required";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const isPrevMonthDisabled = () => {
+    const today = new Date();
+    return (
+      currentMonthData.year === today.getFullYear() &&
+      currentMonthData.month === today.getMonth()
+    );
+  };
 
-    if (validateForm()) {
-      // In a real app, this would be an API call to book the appointment
-      console.log("Booking appointment with:", doctor);
-      console.log("Form data:", formData);
-
-      // Show success message
-      setSubmitSuccess(true);
-
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        date: "",
-        time: "",
-        reason: "",
-      });
-
-      // Redirect after 3 seconds
-      setTimeout(() => {
-        router.push("/appointments");
-      }, 3000);
+  const handleBookAppointment = () => {
+    if (!selectedTimeSlot || selectedDate === null) {
+      alert("Please select a date and time for your appointment");
+      return;
     }
+
+    console.log("Booking appointment with:", doctor);
+    console.log("Selected date:", dates[selectedDate]);
+    console.log("Selected time:", selectedTime);
+    console.log("Appointment type:", activeTab);
+
+    // In a real app, this would send data to the server
+
+    // Redirect to confirmation or appointments page
+    setTimeout(() => {
+      router.push("/appointments");
+    }, 1000);
   };
 
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.loadingSpinner}></div>
-        <p>Loading doctor information...</p>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -212,200 +571,228 @@ export default function BookingPage() {
     <div className={styles.bookingPage}>
       <Navbar />
 
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Book an Appointment</h1>
-          <p className={styles.subtitle}>
-            Fill out the form below to book an appointment with {doctor.name}
+      <div className={styles.heroSection}>
+        <div className={styles.heroLeft}>
+          <h1 className={styles.heroTitle}>
+            Book Your Next Doctor Visit in Seconds.
+          </h1>
+          <p className={styles.heroSubtitle}>
+            CareMate helps you find the best healthcare provider by specialty,
+            location, and more, ensuring you get the care you need.
           </p>
         </div>
 
-        <div className={styles.content}>
-          <div className={styles.doctorInfo}>
-            <div className={styles.doctorImageContainer}>
-              <Image
-                src={doctor.imageUrl}
-                alt={doctor.name}
-                width={200}
-                height={200}
-                className={styles.doctorImage}
-              />
+        <div className={styles.heroRight}>
+          <div className={styles.scheduleAppointment}>
+            <div className={styles.scheduleHeader}>
+              <h2 className={styles.scheduleTitle}>Schedule Appointment</h2>
             </div>
 
-            <div className={styles.doctorDetails}>
-              <h2 className={styles.doctorName}>
-                {doctor.name}, {doctor.degree}
-              </h2>
-              <p className={styles.doctorSpecialty}>{doctor.specialty}</p>
-
-              <div className={styles.doctorStats}>
-                <div className={styles.statItem}>
-                  <Image
-                    src="/hourglass.svg"
-                    alt="Experience"
-                    width={20}
-                    height={20}
-                    className={styles.statIcon}
-                  />
-                  <span>{doctor.experience} Years Experience</span>
-                </div>
-
-                <div className={styles.statItem}>
-                  <div className={styles.ratingStars}>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <Image
-                        key={index}
-                        src={
-                          index < doctor.rating
-                            ? "/filled-star.svg"
-                            : "/unfilled-star.svg"
-                        }
-                        alt={
-                          index < doctor.rating
-                            ? "Filled star"
-                            : "Unfilled star"
-                        }
-                        width={20}
-                        height={20}
-                      />
-                    ))}
-                  </div>
-                  <span>{doctor.rating}.0 Rating</span>
-                </div>
+            <div className={styles.tabContainer}>
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "hospital"
+                    ? styles.tabActive
+                    : styles.tabInactive
+                }`}
+                onClick={() => handleTabChange("hospital")}
+              >
+                Book Hospital Visit
+              </div>
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "video" ? styles.tabActive : styles.tabInactive
+                }`}
+                onClick={() => handleTabChange("video")}
+              >
+                Book Video Consult
               </div>
             </div>
-          </div>
 
-          {submitSuccess ? (
-            <div className={styles.successMessage}>
-              <div className={styles.successIcon}>✓</div>
-              <h3>Appointment Booked Successfully!</h3>
-              <p>You will receive a confirmation email shortly.</p>
-              <p>Redirecting to doctors page...</p>
+            {activeTab === "hospital" ? (
+              <div className={styles.locationLabel}>
+                <Image
+                  src="/location-icon.svg"
+                  alt="Location"
+                  width={16}
+                  height={16}
+                  className={styles.locationIcon}
+                />
+                <span>MedicareHeart Institute, Okhla Road</span>
+              </div>
+            ) : (
+              <div className={styles.locationLabel}>
+                <Image
+                  src="/video-icon.svg"
+                  alt="Virtual"
+                  width={16}
+                  height={16}
+                  className={styles.locationIcon}
+                />
+                <span>Virtual Consultation</span>
+              </div>
+            )}
+
+            <div className={styles.monthSelector}>
+              <button
+                className={`${styles.arrowButton} ${
+                  isPrevMonthDisabled() ? styles.arrowButtonDisabled : ""
+                }`}
+                onClick={handlePrevMonth}
+                disabled={isPrevMonthDisabled()}
+              >
+                <Image
+                  src={
+                    isPrevMonthDisabled()
+                      ? "/left-arrow-disabled.svg"
+                      : "/left-arrow.svg"
+                  }
+                  alt="Previous"
+                  width={20}
+                  height={20}
+                />
+              </button>
+              <span className={styles.monthName}>{currentMonthData.name}</span>
+              <button className={styles.arrowButton} onClick={handleNextMonth}>
+                <Image
+                  src="/right-arrow.svg"
+                  alt="Next"
+                  width={20}
+                  height={20}
+                />
+              </button>
             </div>
-          ) : (
-            <form className={styles.bookingForm} onSubmit={handleSubmit}>
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="name">Full Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className={formErrors.name ? styles.inputError : ""}
-                  />
-                  {formErrors.name && (
-                    <span className={styles.errorText}>{formErrors.name}</span>
-                  )}
-                </div>
 
-                <div className={styles.formGroup}>
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className={formErrors.email ? styles.inputError : ""}
-                  />
-                  {formErrors.email && (
-                    <span className={styles.errorText}>{formErrors.email}</span>
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="phone">Phone Number</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className={formErrors.phone ? styles.inputError : ""}
-                  />
-                  {formErrors.phone && (
-                    <span className={styles.errorText}>{formErrors.phone}</span>
-                  )}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="date">Preferred Date</label>
-                  <input
-                    type="date"
-                    id="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleInputChange}
-                    min={new Date().toISOString().split("T")[0]}
-                    className={formErrors.date ? styles.inputError : ""}
-                  />
-                  {formErrors.date && (
-                    <span className={styles.errorText}>{formErrors.date}</span>
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="time">Preferred Time</label>
-                  <select
-                    id="time"
-                    name="time"
-                    value={formData.time}
-                    onChange={handleInputChange}
-                    className={formErrors.time ? styles.inputError : ""}
-                  >
-                    <option value="">Select a time</option>
-                    <option value="09:00">9:00 AM</option>
-                    <option value="10:00">10:00 AM</option>
-                    <option value="11:00">11:00 AM</option>
-                    <option value="12:00">12:00 PM</option>
-                    <option value="13:00">1:00 PM</option>
-                    <option value="14:00">2:00 PM</option>
-                    <option value="15:00">3:00 PM</option>
-                    <option value="16:00">4:00 PM</option>
-                    <option value="17:00">5:00 PM</option>
-                  </select>
-                  {formErrors.time && (
-                    <span className={styles.errorText}>{formErrors.time}</span>
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="reason">Reason for Visit</label>
-                <textarea
-                  id="reason"
-                  name="reason"
-                  value={formData.reason}
-                  onChange={handleInputChange}
-                  rows={4}
-                  className={formErrors.reason ? styles.inputError : ""}
-                ></textarea>
-                {formErrors.reason && (
-                  <span className={styles.errorText}>{formErrors.reason}</span>
-                )}
-              </div>
-
-              <div className={styles.formActions}>
-                <button
-                  type="button"
-                  className={styles.cancelButton}
-                  onClick={() => router.push("/appointments")}
+            <div className={styles.daysContainer}>
+              {dates.map((date, index) => (
+                <div
+                  key={index}
+                  className={`${styles.dayCard} ${
+                    selectedDate === index
+                      ? styles.dayCardActive
+                      : styles.dayCardInactive
+                  }`}
+                  onClick={() => handleDateSelect(index)}
                 >
-                  Cancel
-                </button>
-                <button type="submit" className={styles.submitButton}>
-                  Book Appointment
-                </button>
+                  <div className={styles.dayName}>{date.day}</div>
+                  <div className={styles.dayDate}>
+                    {date.date} {date.month}
+                  </div>
+                  {date.availableSlots !== undefined &&
+                    date.availableSlots > 0 && (
+                      <div className={styles.daySlots}>
+                        {date.availableSlots} slots
+                      </div>
+                    )}
+                </div>
+              ))}
+              {dates.length === 0 && (
+                <div className={styles.noDateMessage}>No available dates</div>
+              )}
+            </div>
+
+            {/* Morning time slots */}
+            <div className={styles.timeSection}>
+              <div className={styles.timeSectionHeader}>
+                <Image
+                  src="/sun.svg"
+                  alt="Morning"
+                  width={20}
+                  height={20}
+                  className={styles.timeSectionIcon}
+                />
+                <span className={styles.timeSectionTitle}>Morning</span>
+                <div className={styles.slotsIndicator}>
+                  {
+                    morningSlots.filter(
+                      (s) => s.status === "available" || s.status === "selected"
+                    ).length
+                  }{" "}
+                  Slots
+                </div>
               </div>
-            </form>
-          )}
+
+              <div className={styles.timeGrid}>
+                {morningSlots.map((slot, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.timeSlot} ${
+                      slot.status === "disabled"
+                        ? styles.timeSlotDisabled
+                        : slot.status === "selected"
+                        ? styles.timeSlotSelected
+                        : styles.timeSlotAvailable
+                    }`}
+                    onClick={() =>
+                      slot.status !== "disabled" &&
+                      handleTimeSelect(slot, false)
+                    }
+                  >
+                    {slot.time}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Afternoon time slots */}
+            <div className={styles.timeSection}>
+              <div className={styles.timeSectionHeader}>
+                <Image
+                  src="/sunset.svg"
+                  alt="Afternoon"
+                  width={20}
+                  height={20}
+                  className={styles.timeSectionIcon}
+                />
+                <span className={styles.timeSectionTitle}>Afternoon</span>
+                <div className={styles.slotsIndicator}>
+                  {
+                    afternoonSlots.filter(
+                      (s) => s.status === "available" || s.status === "selected"
+                    ).length
+                  }{" "}
+                  Slots
+                </div>
+              </div>
+
+              <div className={styles.timeGrid}>
+                {afternoonSlots.map((slot, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.timeSlot} ${
+                      slot.status === "disabled"
+                        ? styles.timeSlotDisabled
+                        : slot.status === "selected"
+                        ? styles.timeSlotSelected
+                        : styles.timeSlotAvailable
+                    }`}
+                    onClick={() =>
+                      slot.status !== "disabled" && handleTimeSelect(slot, true)
+                    }
+                  >
+                    {slot.time}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button
+              className={styles.nextButton}
+              onClick={handleBookAppointment}
+            >
+              Book Appointment
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.footer}>
+        <div className={styles.copyright}>
+          © EmScripts 2024. All Right Reserved.
+        </div>
+        <div className={styles.socialLinks}>
+          <Image src="/phone.svg" alt="Phone" width={24} height={24} />
+          <Image src="/WhatsApp.svg" alt="WhatsApp" width={24} height={24} />
         </div>
       </div>
     </div>
