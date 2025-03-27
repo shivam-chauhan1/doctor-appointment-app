@@ -22,7 +22,6 @@ interface FormData {
   age: string;
   gender: string;
   email: string;
-  phone: string;
   reasonForVisit: string;
   allergies: string;
   currentMedications: string;
@@ -34,7 +33,6 @@ interface FormErrors {
   age?: string;
   gender?: string;
   email?: string;
-  phone?: string;
   reasonForVisit?: string;
   consent?: string;
 }
@@ -44,7 +42,6 @@ const initialFormData: FormData = {
   age: "",
   gender: "",
   email: "",
-  phone: "",
   reasonForVisit: "",
   allergies: "",
   currentMedications: "",
@@ -161,7 +158,7 @@ const ConfirmBookingPage = () => {
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<FormErrors> = {};
+    const newErrors: FormErrors = {};
 
     if (!formData.fullName.trim()) {
       newErrors.fullName = "Full name is required";
@@ -181,12 +178,6 @@ const ConfirmBookingPage = () => {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid 10-digit phone number";
     }
 
     if (!formData.reasonForVisit.trim()) {
@@ -352,22 +343,6 @@ const ConfirmBookingPage = () => {
                   />
                   {errors.email && (
                     <span className={styles.errorMessage}>{errors.email}</span>
-                  )}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="phone">Phone Number</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className={errors.phone ? styles.inputError : ""}
-                    placeholder="Enter your phone number"
-                  />
-                  {errors.phone && (
-                    <span className={styles.errorMessage}>{errors.phone}</span>
                   )}
                 </div>
               </div>
