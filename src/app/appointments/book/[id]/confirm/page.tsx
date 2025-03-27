@@ -37,11 +37,17 @@ interface FormErrors {
   consent?: string;
 }
 
+// Mock user data (this would come from user's login in the future)
+const mockUserData = {
+  fullName: "John Doe",
+  email: "john.doe@example.com",
+};
+
 const initialFormData: FormData = {
-  fullName: "",
+  fullName: mockUserData.fullName,
   age: "",
   gender: "",
-  email: "",
+  email: mockUserData.email,
   reasonForVisit: "",
   allergies: "",
   currentMedications: "",
@@ -160,10 +166,6 @@ const ConfirmBookingPage = () => {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required";
-    }
-
     if (!formData.age.trim()) {
       newErrors.age = "Age is required";
     } else if (isNaN(Number(formData.age)) || Number(formData.age) < 0) {
@@ -172,12 +174,6 @@ const ConfirmBookingPage = () => {
 
     if (!formData.gender) {
       newErrors.gender = "Gender is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
     }
 
     if (!formData.reasonForVisit.trim()) {
@@ -283,13 +279,10 @@ const ConfirmBookingPage = () => {
                   id="fullName"
                   name="fullName"
                   value={formData.fullName}
-                  onChange={handleInputChange}
-                  className={errors.fullName ? styles.inputError : ""}
+                  readOnly
+                  className={styles.readOnlyInput}
                   placeholder="Enter your full name"
                 />
-                {errors.fullName && (
-                  <span className={styles.errorMessage}>{errors.fullName}</span>
-                )}
               </div>
 
               <div className={styles.formRow}>
@@ -329,22 +322,17 @@ const ConfirmBookingPage = () => {
                 </div>
               </div>
 
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className={errors.email ? styles.inputError : ""}
-                    placeholder="Enter your email"
-                  />
-                  {errors.email && (
-                    <span className={styles.errorMessage}>{errors.email}</span>
-                  )}
-                </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  readOnly
+                  className={styles.readOnlyInput}
+                  placeholder="Enter your email"
+                />
               </div>
 
               <div className={styles.formGroup}>
