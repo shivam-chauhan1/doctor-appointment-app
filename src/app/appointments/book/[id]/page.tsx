@@ -772,8 +772,11 @@ export default function BookingPage() {
             </div>
 
             <button
-              className={styles.nextButton}
+              className={`${styles.nextButton} ${
+                !selectedTimeSlot ? styles.nextButtonDisabled : ""
+              }`}
               onClick={handleBookAppointment}
+              disabled={!selectedTimeSlot}
             >
               Book Appointment
             </button>

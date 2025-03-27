@@ -317,17 +317,30 @@
 
 .nextButton {
   width: 100%;
-  background: #1c4a2a;
-  border-radius: 8px;
-  padding: 16px;
-  font-family: var(--font-montserrat);
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 17px;
-  color: #ffffff;
+  padding: 1rem;
+  background-color: #1c4a2a;
+  color: white;
   border: none;
+  border-radius: 8px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 16px;
+  transition: background-color 0.2s;
+  margin-top: 1.5rem;
+}
+
+.nextButton:hover {
+  background-color: #153a22;
+}
+
+.nextButtonDisabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.nextButtonDisabled:hover {
+  background-color: #cccccc;
 }
 
 .footer {
