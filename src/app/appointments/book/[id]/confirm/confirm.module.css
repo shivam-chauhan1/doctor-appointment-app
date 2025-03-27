@@ -1,0 +1,260 @@
+.bookingPage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  flex: 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: #1c4a2a;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.formContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.appointmentSummary {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.doctorInfo {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.doctorImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.doctorDetails {
+  flex: 1;
+}
+
+.doctorName {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #1c4a2a;
+  margin-bottom: 0.25rem;
+}
+
+.doctorSpecialty {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.appointmentDateTime {
+  font-family: "Poppins", sans-serif;
+  color: #1c4a2a;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.consultationType {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #333;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #1c4a2a;
+}
+
+.inputError {
+  border-color: #dc3545 !important;
+}
+
+.errorMessage {
+  color: #dc3545;
+  font-size: 0.875rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.consentGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-family: "Poppins", sans-serif;
+  color: #666;
+  cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  margin-top: 0.25rem;
+}
+
+.privacyLink {
+  color: #1c4a2a;
+  text-decoration: none;
+}
+
+.privacyLink:hover {
+  text-decoration: underline;
+}
+
+.submitButton {
+  background-color: #1c4a2a;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.submitButton:hover {
+  background-color: #153a22;
+}
+
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.successContainer {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.successIcon {
+  margin-bottom: 1.5rem;
+}
+
+.successTitle {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 2rem;
+  color: #1c4a2a;
+  margin-bottom: 1rem;
+}
+
+.successMessage {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.redirectMessage {
+  font-family: "Poppins", sans-serif;
+  color: #1c4a2a;
+  font-weight: 500;
+}
+
+.footer {
+  background-color: white;
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid #eee;
+}
+
+.copyright {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .doctorInfo {
+    flex-direction: column;
+    text-align: center;
+  }
+}

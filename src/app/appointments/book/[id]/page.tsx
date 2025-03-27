@@ -222,7 +222,6 @@ export default function BookingPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"hospital" | "video">("hospital");
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
     null
   );
@@ -312,7 +311,6 @@ export default function BookingPage() {
       setAfternoonSlots(afternoon);
 
       // Reset selected time when date changes
-      setSelectedTime(null);
       setSelectedTimeSlot(null);
     }
   }, [selectedDate, dates]);
@@ -348,7 +346,6 @@ export default function BookingPage() {
       ) {
         newMorningSlots[morningIndex].status = "available";
         setMorningSlots(newMorningSlots);
-        setSelectedTime(null);
         setSelectedTimeSlot(null);
         return;
       }
@@ -359,7 +356,6 @@ export default function BookingPage() {
       ) {
         newAfternoonSlots[afternoonIndex].status = "available";
         setAfternoonSlots(newAfternoonSlots);
-        setSelectedTime(null);
         setSelectedTimeSlot(null);
         return;
       }
@@ -406,7 +402,6 @@ export default function BookingPage() {
       setAfternoonSlots(newAfternoonSlots);
     }
 
-    setSelectedTime(slot.time);
     setSelectedTimeSlot(slot);
   };
 
@@ -530,17 +525,17 @@ export default function BookingPage() {
       return;
     }
 
-    console.log("Booking appointment with:", doctor);
-    console.log("Selected date:", dates[selectedDate]);
-    console.log("Selected time:", selectedTime);
-    console.log("Appointment type:", activeTab);
+    const selectedDateObj = dates[selectedDate];
+    const formattedDate = `${selectedDateObj.date} ${selectedDateObj.month} ${selectedDateObj.year}`;
 
-    // In a real app, this would send data to the server
-
-    // Redirect to confirmation or appointments page
-    setTimeout(() => {
-      router.push("/appointments");
-    }, 1000);
+    // Navigate to confirmation page with appointment details
+    router.push(
+      `/appointments/book/${doctor?.id}/confirm?date=${encodeURIComponent(
+        formattedDate
+      )}&time=${encodeURIComponent(selectedTimeSlot.time)}&isVirtual=${
+        activeTab === "video"
+      }`
+    );
   };
 
   if (loading) {
