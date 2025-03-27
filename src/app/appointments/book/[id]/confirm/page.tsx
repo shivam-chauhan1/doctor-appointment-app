@@ -204,9 +204,9 @@ const ConfirmBookingPage = () => {
       // Show success message
       setIsSuccessful(true);
 
-      // Redirect to appointments page after 3 seconds
+      // Redirect to user dashboard after 3 seconds
       setTimeout(() => {
-        router.push("/appointments");
+        router.push("/dashboard");
       }, 3000);
     } catch (error) {
       console.error("Error booking appointment:", error);
@@ -244,7 +244,7 @@ const ConfirmBookingPage = () => {
               email will be sent to {formData.email} shortly.
             </p>
             <p className={styles.redirectMessage}>
-              Redirecting you to appointments page...
+              Redirecting you to dashboard...
             </p>
           </div>
         ) : (
